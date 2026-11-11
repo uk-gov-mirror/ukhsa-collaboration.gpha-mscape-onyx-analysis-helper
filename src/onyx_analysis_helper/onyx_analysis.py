@@ -279,6 +279,12 @@ def write_s3_locations_to_json(
         s3_output_location = f"s3://{bucket}/{analysis_id}"
         onyx_analysis.outputs = s3_output_location
     # TODO: Handle HTML/report
+    report_uri = next(
+        (uri for uri in s3_locations if uri.lower().endswith(".html")),
+        None,
+    )
+    if report_uri:
+        onyx_analysis.report = report_uri
     # Write s3 locations to onyx analysis json
     s3_file = Path(outdir) / f"{climb_id}.onyx_analysis.s3_upload.analysis_fields.json"
 
